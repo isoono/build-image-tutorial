@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: hello
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: app
+    spec:
+      containers:
+        - name: hello
+          image: docker.io/tnsgh211/hello:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-np
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      protocol: TCP
+      nodePort: 30080
+  selector:
+    app: hello
+    tier: app
